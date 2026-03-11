@@ -13,30 +13,6 @@ interface StatItem {
   icon: React.ReactNode;
 }
 
-const STATS: StatItem[] = [
-  {
-    value: "8+",
-    numericValue: 8,
-    suffix: "+",
-    label: "Skills Available",
-    sublabel: "Ready to use in your AI agent",
-    icon: <Zap className="text-bnb-yellow" size={22} />,
-  },
-  {
-    value: "6",
-    numericValue: 6,
-    label: "Categories",
-    sublabel: "DeFi, Trading, Analytics & more",
-    icon: <Layers className="text-bnb-yellow" size={22} />,
-  },
-  {
-    value: "Open Source",
-    label: "Always Free",
-    sublabel: "MIT licensed, forever open",
-    icon: <Code2 className="text-bnb-yellow" size={22} />,
-  },
-];
-
 function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
@@ -70,9 +46,37 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
   );
 }
 
-export default function StatsSection() {
+interface StatsSectionProps {
+  skillCount: number;
+  categoryCount: number;
+}
+
+export default function StatsSection({ skillCount, categoryCount }: StatsSectionProps) {
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+
+  const stats: StatItem[] = [
+    {
+      value: String(skillCount),
+      numericValue: skillCount,
+      label: "Skills Available",
+      sublabel: "Ready to use in your AI agent",
+      icon: <Zap className="text-bnb-yellow" size={22} />,
+    },
+    {
+      value: String(categoryCount),
+      numericValue: categoryCount,
+      label: "Categories",
+      sublabel: "DeFi, Trading, Analytics & more",
+      icon: <Layers className="text-bnb-yellow" size={22} />,
+    },
+    {
+      value: "Open Source",
+      label: "Always Free",
+      sublabel: "MIT licensed, forever open",
+      icon: <Code2 className="text-bnb-yellow" size={22} />,
+    },
+  ];
 
   return (
     <section
@@ -90,7 +94,7 @@ export default function StatsSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-4">
-          {STATS.map((stat, index) => (
+          {stats.map((stat, index) => (
             <div
               key={stat.label}
               className="relative flex flex-col items-center text-center px-8 py-8 rounded-2xl border border-bnb-border bg-bnb-card/40 backdrop-blur-sm group hover:border-bnb-yellow/30 transition-all duration-300"
@@ -126,7 +130,7 @@ export default function StatsSection() {
               <div className="text-bnb-muted text-sm">{stat.sublabel}</div>
 
               {/* Separator (not on last) */}
-              {index < STATS.length - 1 && (
+              {index < stats.length - 1 && (
                 <div className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-16 bg-bnb-border" />
               )}
             </div>

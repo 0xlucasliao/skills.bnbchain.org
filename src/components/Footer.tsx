@@ -159,7 +159,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-bnb-border flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-bnb-muted text-xs">
-            © {currentYear} BNB Chain Skills Hub. MIT License.
+            © {currentYear} Skills Hub. MIT License.
           </p>
           <p className="text-bnb-muted text-xs">
             Built for the{" "}
@@ -171,7 +171,15 @@ export default function Footer() {
             >
               BNB Chain
             </a>{" "}
-            ecosystem
+            ecosystem by{" "}
+            <a
+              href="https://github.com/0xlucasliao"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-bnb-muted hover:text-bnb-text transition-colors"
+            >
+              @0xlucasliao
+            </a>
           </p>
         </div>
       </div>

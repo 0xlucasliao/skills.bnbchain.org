@@ -17,12 +17,15 @@ export default async function HomePage() {
     .concat(allSkills.filter((s) => !featuredSlugs.includes(s.slug)))
     .slice(0, 3) as typeof allSkills;
 
+  const skillCount = allSkills.length;
+  const categoryCount = new Set(allSkills.map((s) => s.category)).size;
+
   return (
     <>
       <Navigation />
       <main>
         <Hero />
-        <StatsSection />
+        <StatsSection skillCount={skillCount} categoryCount={categoryCount} />
         <FeaturedSkills skills={featuredSkills} />
         <HowItWorks />
       </main>

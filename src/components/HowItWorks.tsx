@@ -7,17 +7,17 @@ import { GitFork, FileText, GitPullRequest } from "lucide-react";
 const STEPS = [
   {
     number: "01",
-    title: "Fork the Repo",
+    title: "Fork & Clone",
     description:
-      "Start by forking the BNB Chain Skills Hub repository on GitHub. This gives you your own copy to work with.",
+      "Fork the bnb-chain/skills-hub repository on GitHub and clone it locally. The whole process takes about two minutes.",
     icon: <GitFork size={24} className="text-bnb-yellow" />,
     gradient: "from-yellow-500/20 to-yellow-600/10",
   },
   {
     number: "02",
-    title: "Create Your Skill",
+    title: "Add Your Metadata File",
     description:
-      "Add a new folder under skills/ with your skill name. Create a SKILL.md file with YAML frontmatter metadata and detailed documentation.",
+      "Create a single JSON file named <skillname>-metadata.json inside the skills/ folder. Fill in the required fields: github_url (public repo), category (array of tags), and a one-to-two sentence description.",
     icon: <FileText size={24} className="text-bnb-yellow" />,
     gradient: "from-yellow-500/20 to-orange-600/10",
   },
@@ -25,7 +25,7 @@ const STEPS = [
     number: "03",
     title: "Open a PR",
     description:
-      "Submit a pull request to the main repository. After review, your skill gets merged and published to the hub for the community to discover.",
+      "Submit a pull request against the main branch — one skill per PR. Once merged, the system automatically enriches your entry with owner info, repo stats, and an AgentGuard security scan.",
     icon: <GitPullRequest size={24} className="text-bnb-yellow" />,
     gradient: "from-yellow-500/20 to-amber-600/10",
   },
@@ -122,7 +122,7 @@ export default function HowItWorks() {
         {/* CTA */}
         <div className="mt-12 text-center">
           <a
-            href="https://github.com/bnb-chain/skills-hub"
+            href="https://github.com/bnb-chain/skills-hub/blob/main/CONTRIBUTING.md"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl border border-bnb-yellow/40 text-bnb-yellow font-semibold hover:bg-bnb-yellow/10 hover:border-bnb-yellow/70 transition-all duration-200 text-sm"
