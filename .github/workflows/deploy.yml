@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Rebuild when this repo changes
+  push:
+    branches: [main]
+
+  # Triggered by bnb-chain/skills-hub via repository_dispatch when new skills are merged.
+  # The skills-hub workflow must POST to this repo's dispatches endpoint with:
+  #   event_type: "skills-updated"
+  # using a PAT stored as a secret (needs contents:write on this repo).
+  repository_dispatch:
+    types: [skills-updated]
+
+  # Periodic fallback rebuild to catch any missed dispatches
+  schedule:
+    - cron: "0 */6 * * *"
+
+  # Manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one deployment at a time; don't cancel in-progress runs so a
+# deploy already underway completes before a newer one starts.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          # Used to raise the GitHub API rate limit when fetching skill metadata.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Set the BASE_PATH repository variable in Settings > Variables > Actions.
+          # • Custom domain (e.g. skills.bnbchain.org) → leave empty or omit
+          # • GitHub Pages subdirectory (e.g. org.github.io/repo) → set to /repo-name
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH }}
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
