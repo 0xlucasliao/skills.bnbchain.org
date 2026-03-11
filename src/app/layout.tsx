@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://skills-hub.vercel.app",
+    url: "https://bnbchainskills.com",
     title: "BNB Chain Skills Hub",
     description:
       "The open skills marketplace for BNB Chain AI agents. Discover, use, and contribute skills for DeFi, trading, analytics, and more.",

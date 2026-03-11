@@ -48,11 +48,8 @@ jobs:
         env:
           # Used to raise the GitHub API rate limit when fetching skill metadata.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Automatically uses /repo-name as the base path for GitHub Pages.
-          # Override by setting BASE_PATH in Settings > Variables > Actions:
-          #   • Custom domain → set BASE_PATH to empty string ""
-          #   • Different subdirectory → set BASE_PATH to /your-path
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.BASE_PATH != '' && vars.BASE_PATH || format('/{0}', github.event.repository.name) }}
+          # Custom domain bnbchainskills.com — no subdirectory prefix needed.
+          NEXT_PUBLIC_BASE_PATH: ""
         run: npm run build
 
       - name: Upload Pages artifact
