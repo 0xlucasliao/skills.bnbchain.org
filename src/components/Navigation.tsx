@@ -3,39 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Github, Menu, X } from "lucide-react";
-
-const GITHUB_REPO = "https://github.com/bnb-chain/skills-hub";
-
-function BNBLogo() {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <polygon
-        points="16,2 28,9 28,23 16,30 4,23 4,9"
-        fill="#F0B90B"
-        opacity="0.15"
-        stroke="#F0B90B"
-        strokeWidth="1.5"
-      />
-      <text
-        x="16"
-        y="21"
-        textAnchor="middle"
-        fontSize="10"
-        fontWeight="800"
-        fill="#F0B90B"
-        fontFamily="Inter, sans-serif"
-      >
-        BNB
-      </text>
-    </svg>
-  );
-}
+import BNBLogo from "@/components/BNBLogo";
+import { SKILLS_REPO } from "@/lib/constants";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -58,10 +27,7 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 group"
-          >
+          <Link href="/" className="flex items-center gap-2.5 group">
             <BNBLogo />
             <div className="flex flex-col leading-none">
               <span className="text-bnb-text font-bold text-sm tracking-wide">
@@ -82,7 +48,7 @@ export default function Navigation() {
               Skills
             </Link>
             <a
-              href={GITHUB_REPO}
+              href={SKILLS_REPO}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-bnb-muted hover:text-bnb-text transition-colors text-sm font-medium"
@@ -91,7 +57,7 @@ export default function Navigation() {
               GitHub
             </a>
             <a
-              href={`${GITHUB_REPO}/pulls`}
+              href={`${SKILLS_REPO}/pulls`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-bnb-yellow text-bnb-dark text-sm font-semibold hover:bg-yellow-400 transition-all duration-200 hover:shadow-lg hover:shadow-bnb-yellow/20"
@@ -122,7 +88,7 @@ export default function Navigation() {
                 Skills
               </Link>
               <a
-                href={GITHUB_REPO}
+                href={SKILLS_REPO}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-bnb-muted hover:text-bnb-text hover:bg-bnb-card-hover transition-colors text-sm font-medium"
@@ -131,7 +97,7 @@ export default function Navigation() {
                 GitHub
               </a>
               <a
-                href={`${GITHUB_REPO}/pulls`}
+                href={`${SKILLS_REPO}/pulls`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-bnb-yellow text-bnb-dark text-sm font-semibold hover:bg-yellow-400 transition-all"

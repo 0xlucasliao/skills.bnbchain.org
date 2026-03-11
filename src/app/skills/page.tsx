@@ -5,9 +5,27 @@ import SkillsGrid from "@/components/SkillsGrid";
 import { getAllSkills } from "@/lib/skills";
 
 export const metadata: Metadata = {
-  title: "Skills Directory",
+  title: "Skills Directory — Browse AI Agent Skills for BNB Chain",
   description:
-    "Browse all AI agent skills for BNB Chain development. Filter by category and search for DeFi, trading, analytics, and infrastructure skills.",
+    "Browse all open-source AI agent skills for BNB Chain. Search and filter by category: DeFi, trading, analytics, infrastructure, cross-chain, security, and more.",
+  keywords: [
+    "BNB Chain skills",
+    "AI agent skills",
+    "MCP skills",
+    "BNB Chain DeFi",
+    "blockchain automation",
+    "Web3 AI agents",
+    "BSC developer tools",
+    "open source skills",
+  ],
+  alternates: { canonical: "https://bnbchainskills.com/skills" },
+  openGraph: {
+    title: "Skills Directory — BNB Chain Skills Hub",
+    description:
+      "Browse all open-source AI agent skills for BNB Chain development.",
+    url: "https://bnbchainskills.com/skills",
+    type: "website",
+  },
 };
 
 export default async function SkillsPage() {

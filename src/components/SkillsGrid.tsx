@@ -85,20 +85,18 @@ export default function SkillsGrid({ skills, categories }: SkillsGridProps) {
             layout
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
           >
-            <AnimatePresence>
-              {filteredSkills.map((skill, index) => (
-                <motion.div
-                  key={skill.slug}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2, delay: index * 0.03 }}
-                >
-                  <SkillCard skill={skill} index={index} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            {filteredSkills.map((skill, index) => (
+              <motion.div
+                key={skill.slug}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.2, delay: index * 0.03 }}
+              >
+                <SkillCard skill={skill} index={index} />
+              </motion.div>
+            ))}
           </motion.div>
         ) : (
           <motion.div

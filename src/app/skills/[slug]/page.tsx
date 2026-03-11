@@ -30,16 +30,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const skill = await getSkillBySlug(slug);
 
-  if (!skill) {
-    return { title: "Skill Not Found" };
-  }
+  if (!skill) return { title: "Skill Not Found" };
+
+  const title = `${skill.title} — BNB Chain AI Agent Skill`;
+  const description = skill.description;
+  const url = `https://bnbchainskills.com/skills/${slug}`;
 
   return {
-    title: skill.title,
-    description: skill.description,
+    title,
+    description,
+    keywords: [
+      skill.title,
+      ...skill.categories,
+      "BNB Chain",
+      "AI agent skill",
+      "MCP",
+      "blockchain skill",
+      "Web3 automation",
+      skill.author,
+    ],
+    authors: [{ name: skill.author }],
+    alternates: { canonical: url },
     openGraph: {
-      title: `${skill.title} | BNB Chain Skills Hub`,
-      description: skill.description,
+      title,
+      description,
+      url,
+      type: "website",
+      siteName: "BNB Chain Skills Hub",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
     },
   };
 }
@@ -55,18 +77,36 @@ export default async function SkillDetailPage({ params }: Props) {
   const { slug } = await params;
   const skill = await getSkillBySlug(slug);
 
-  if (!skill) {
-    notFound();
-  }
+  if (!skill) notFound();
 
   const colorClass = CATEGORY_COLORS[skill.category] || CATEGORY_COLORS["Other"];
   const fallbackIcon = CATEGORY_ICONS[skill.category] || "⚡";
-  const riskStyle = skill.riskLevel
-    ? RISK_STYLES[skill.riskLevel.toLowerCase()] || RISK_STYLES["safe"]
-    : null;
+  const riskKey = skill.riskLevel?.toLowerCase();
+  const riskStyle = riskKey ? RISK_STYLES[riskKey] || RISK_STYLES["safe"] : null;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: skill.title,
+    description: skill.description,
+    url: `https://bnbchainskills.com/skills/${slug}`,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Web",
+    author: {
+      "@type": "Person",
+      name: skill.author,
+      url: skill.ownerProfileUrl,
+    },
+    codeRepository: skill.github,
+    keywords: skill.categories.join(", "),
+  };
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navigation />
       <main className="min-h-screen pt-20 pb-20">
         {/* Hero header */}
@@ -81,23 +121,15 @@ export default async function SkillDetailPage({ params }: Props) {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-bnb-muted mb-8">
-              <Link href="/" className="hover:text-bnb-yellow transition-colors">
-                Home
-              </Link>
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-bnb-muted mb-8">
+              <Link href="/" className="hover:text-bnb-yellow transition-colors">Home</Link>
               <span>/</span>
-              <Link
-                href="/skills"
-                className="hover:text-bnb-yellow transition-colors"
-              >
-                Skills
-              </Link>
+              <Link href="/skills" className="hover:text-bnb-yellow transition-colors">Skills</Link>
               <span>/</span>
               <span className="text-bnb-text">{skill.title}</span>
             </nav>
 
             <div className="flex flex-col sm:flex-row sm:items-start gap-5">
-              {/* Icon */}
               <div className="w-16 h-16 rounded-2xl bg-bnb-dark border border-bnb-border flex items-center justify-center text-3xl shrink-0 overflow-hidden">
                 {skill.ownerAvatarUrl ? (
                   <Image
@@ -113,19 +145,12 @@ export default async function SkillDetailPage({ params }: Props) {
               </div>
 
               <div className="flex-1 min-w-0">
-                {/* Category badge */}
-                <span
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${colorClass} mb-3`}
-                >
+                <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${colorClass} mb-3`}>
                   {skill.category}
                 </span>
-
-                {/* Title */}
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-bnb-text tracking-tight mb-3">
                   {skill.title}
                 </h1>
-
-                {/* Description */}
                 <p className="text-bnb-muted text-lg leading-relaxed max-w-3xl">
                   {skill.description}
                 </p>
@@ -139,36 +164,8 @@ export default async function SkillDetailPage({ params }: Props) {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
             {/* Main content */}
             <div className="lg:col-span-3 order-2 lg:order-1 space-y-6">
-              {/* About */}
-              <div className="rounded-2xl border border-bnb-border bg-bnb-card p-6">
-                <h2 className="text-bnb-text font-semibold text-sm uppercase tracking-wider mb-3">
-                  About
-                </h2>
-                <p className="text-bnb-muted leading-relaxed">
-                  {skill.description || "No description provided."}
-                </p>
-              </div>
 
-              {/* Categories */}
-              {skill.categories.length > 0 && (
-                <div className="rounded-2xl border border-bnb-border bg-bnb-card p-6">
-                  <h2 className="text-bnb-text font-semibold text-sm uppercase tracking-wider mb-3">
-                    Tags
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {skill.categories.map((cat) => (
-                      <span
-                        key={cat}
-                        className="px-3 py-1 rounded-full text-xs font-medium bg-bnb-dark border border-bnb-border text-bnb-muted capitalize"
-                      >
-                        {cat}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Security scan */}
+              {/* Security scan — top */}
               {skill.riskLevel && (
                 <div className="rounded-2xl border border-bnb-border bg-bnb-card p-6">
                   <h2 className="text-bnb-text font-semibold text-sm uppercase tracking-wider mb-4">
@@ -176,11 +173,8 @@ export default async function SkillDetailPage({ params }: Props) {
                   </h2>
                   <div className="flex items-center gap-3 mb-4">
                     <ShieldCheck size={18} className="text-bnb-muted" />
-                    <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${riskStyle}`}
-                    >
-                      {skill.riskLevel.charAt(0).toUpperCase() +
-                        skill.riskLevel.slice(1)}
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${riskStyle}`}>
+                      {skill.riskLevel.charAt(0).toUpperCase() + skill.riskLevel.slice(1)}
                     </span>
                     {skill.riskScore !== undefined && (
                       <span className="text-bnb-muted text-xs">
@@ -211,19 +205,36 @@ export default async function SkillDetailPage({ params }: Props) {
                   )}
                 </div>
               )}
+
+              {/* Tags */}
+              {skill.categories.length > 0 && (
+                <div className="rounded-2xl border border-bnb-border bg-bnb-card p-6">
+                  <h2 className="text-bnb-text font-semibold text-sm uppercase tracking-wider mb-3">
+                    Tags
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {skill.categories.map((cat) => (
+                      <span
+                        key={cat}
+                        className="px-3 py-1 rounded-full text-xs font-medium bg-bnb-dark border border-bnb-border text-bnb-muted capitalize"
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
             <aside className="lg:col-span-1 order-1 lg:order-2">
               <div className="sticky top-24 space-y-4">
-                {/* Metadata card */}
                 <div className="rounded-2xl border border-bnb-border bg-bnb-card p-6">
                   <h3 className="text-bnb-text font-semibold text-sm uppercase tracking-wider mb-4">
                     Skill Info
                   </h3>
 
                   <dl className="space-y-4">
-                    {/* Author with avatar */}
                     <div className="flex items-start gap-3">
                       {skill.ownerAvatarUrl ? (
                         <Image
@@ -255,7 +266,6 @@ export default async function SkillDetailPage({ params }: Props) {
                       </div>
                     </div>
 
-                    {/* Stars */}
                     {skill.stars !== undefined && (
                       <div className="flex items-start gap-3">
                         <Star size={15} className="text-bnb-muted mt-0.5 shrink-0" />
@@ -268,15 +278,12 @@ export default async function SkillDetailPage({ params }: Props) {
                       </div>
                     )}
 
-                    {/* Category */}
                     <div className="flex items-start gap-3">
                       <Tag size={15} className="text-bnb-muted mt-0.5 shrink-0" />
                       <div>
                         <dt className="text-bnb-muted text-xs mb-0.5">Category</dt>
                         <dd>
-                          <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border ${colorClass}`}
-                          >
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border ${colorClass}`}>
                             {skill.category}
                           </span>
                         </dd>
@@ -285,7 +292,6 @@ export default async function SkillDetailPage({ params }: Props) {
                   </dl>
                 </div>
 
-                {/* GitHub link */}
                 {skill.github && (
                   <a
                     href={skill.github}
@@ -298,7 +304,6 @@ export default async function SkillDetailPage({ params }: Props) {
                   </a>
                 )}
 
-                {/* Back link */}
                 <Link
                   href="/skills"
                   className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-bnb-border text-bnb-muted text-sm hover:border-bnb-yellow/40 hover:text-bnb-yellow transition-all"

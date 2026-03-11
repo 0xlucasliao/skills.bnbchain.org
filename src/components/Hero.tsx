@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Github } from "lucide-react";
-
-const GITHUB_REPO = "https://github.com/bnb-chain/skills-hub";
+import { SKILLS_REPO } from "@/lib/constants";
 
 const PARTICLES = Array.from({ length: 24 }, (_, i) => ({
   id: i,
@@ -109,7 +108,12 @@ function BigHexLogo() {
   );
 }
 
-export default function Hero() {
+interface HeroProps {
+  skillCount: number;
+  categoryCount: number;
+}
+
+export default function Hero({ skillCount, categoryCount }: HeroProps) {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-bnb-dark">
       {/* Radial gradient bg */}
@@ -247,7 +251,7 @@ export default function Hero() {
             />
           </Link>
           <a
-            href={`https://github.com/bnb-chain/skills-hub/pulls`}
+            href={`${SKILLS_REPO}/pulls`}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2.5 px-8 py-3.5 rounded-xl border border-bnb-yellow/40 text-bnb-yellow font-bold text-base hover:bg-bnb-yellow/10 hover:border-bnb-yellow/70 transition-all duration-200 hover:-translate-y-0.5"
@@ -266,10 +270,10 @@ export default function Hero() {
         >
           <span className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-400" />
-            8+ Skills
+            {skillCount}+ Skills
           </span>
           <span className="w-px h-4 bg-bnb-border" />
-          <span>6 Categories</span>
+          <span>{categoryCount} Categories</span>
           <span className="w-px h-4 bg-bnb-border" />
           <span>100% Open Source</span>
         </motion.div>

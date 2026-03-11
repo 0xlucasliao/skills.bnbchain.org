@@ -1,48 +1,7 @@
 import Link from "next/link";
 import { Github, ExternalLink } from "lucide-react";
-
-const GITHUB_REPO = "https://github.com/bnb-chain/skills-hub";
-
-function BNBLogoText() {
-  return (
-    <div className="flex items-center gap-2.5">
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <polygon
-          points="16,2 28,9 28,23 16,30 4,23 4,9"
-          fill="#F0B90B"
-          opacity="0.15"
-          stroke="#F0B90B"
-          strokeWidth="1.5"
-        />
-        <text
-          x="16"
-          y="21"
-          textAnchor="middle"
-          fontSize="10"
-          fontWeight="800"
-          fill="#F0B90B"
-          fontFamily="Inter, sans-serif"
-        >
-          BNB
-        </text>
-      </svg>
-      <div className="flex flex-col leading-none">
-        <span className="text-bnb-text font-bold text-sm tracking-wide">
-          BNB Chain
-        </span>
-        <span className="text-bnb-yellow font-semibold text-xs">
-          Skills Hub
-        </span>
-      </div>
-    </div>
-  );
-}
+import BNBLogo from "@/components/BNBLogo";
+import { SKILLS_REPO } from "@/lib/constants";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -53,14 +12,24 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <BNBLogoText />
+            <div className="flex items-center gap-2.5">
+              <BNBLogo />
+              <div className="flex flex-col leading-none">
+                <span className="text-bnb-text font-bold text-sm tracking-wide">
+                  BNB Chain
+                </span>
+                <span className="text-bnb-yellow font-semibold text-xs">
+                  Skills Hub
+                </span>
+              </div>
+            </div>
             <p className="mt-4 text-bnb-muted text-sm leading-relaxed max-w-xs">
               The open skills marketplace for BNB Chain AI agents. Community
               driven, open source, and always free.
             </p>
             <div className="mt-6 flex items-center gap-3">
               <a
-                href={GITHUB_REPO}
+                href={SKILLS_REPO}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-bnb-card border border-bnb-border flex items-center justify-center text-bnb-muted hover:text-bnb-yellow hover:border-bnb-yellow/40 transition-all"
@@ -80,7 +49,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
+          {/* Explore */}
           <div>
             <h4 className="text-bnb-text font-semibold text-sm mb-4">
               Explore
@@ -96,7 +65,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={`${GITHUB_REPO}/pulls`}
+                  href={`${SKILLS_REPO}/pulls`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-bnb-muted text-sm hover:text-bnb-yellow transition-colors"
@@ -106,7 +75,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href={GITHUB_REPO}
+                  href={SKILLS_REPO}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-bnb-muted text-sm hover:text-bnb-yellow transition-colors"
@@ -117,6 +86,7 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* BNB Chain */}
           <div>
             <h4 className="text-bnb-text font-semibold text-sm mb-4">
               BNB Chain

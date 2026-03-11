@@ -12,10 +12,27 @@ interface SkillCardProps {
   index?: number;
 }
 
+const RISK_COLORS: Record<string, string> = {
+  safe: "text-green-400",
+  low: "text-yellow-400",
+  medium: "text-orange-400",
+  high: "text-red-400",
+};
+
+const RISK_DOT: Record<string, string> = {
+  safe: "bg-green-400",
+  low: "bg-yellow-400",
+  medium: "bg-orange-400",
+  high: "bg-red-400",
+};
+
 export default function SkillCard({ skill, index = 0 }: SkillCardProps) {
   const colorClass =
     CATEGORY_COLORS[skill.category] || CATEGORY_COLORS["Other"];
   const fallbackIcon = CATEGORY_ICONS[skill.category] || "⚡";
+  const riskKey = skill.riskLevel?.toLowerCase();
+  const riskColor = riskKey ? RISK_COLORS[riskKey] : undefined;
+  const dotColor = riskKey ? RISK_DOT[riskKey] : undefined;
 
   return (
     <motion.div
@@ -83,6 +100,14 @@ export default function SkillCard({ skill, index = 0 }: SkillCardProps) {
                   <span className="inline-flex items-center gap-1 text-xs text-bnb-muted">
                     <Star size={11} className="text-bnb-yellow" />
                     {skill.stars}
+                  </span>
+                )}
+
+                {/* Risk level */}
+                {riskKey && riskColor && dotColor && (
+                  <span className={`inline-flex items-center gap-1 text-xs ${riskColor}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
+                    {skill.riskLevel!.charAt(0).toUpperCase() + skill.riskLevel!.slice(1)}
                   </span>
                 )}
               </div>
